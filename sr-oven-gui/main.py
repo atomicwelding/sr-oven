@@ -8,45 +8,10 @@ class App():
         self._T = 0.0
         self._isOn = False
 
-        # calendar
-
-        # tkinter related
+        # tkinter init
         self._root = tk.Tk()
-        self._root.title("Sr-oven")
-        self._root.geometry("600x400")
-
-        self._root.columnconfigure(index=0, weight=1)
-        self._root.columnconfigure(index=1, weight=3)
-
-        grid_w, grid_h = self._root.grid_size()
-
-        # temperature monitoring
-        self.frame_monitor = ttk.LabelFrame(self._root, text="Monitor", width=380, height=100)
-        self.frame_monitor.grid(column=0, row=0, columnspan=2)
-
-        # field to input new temperature for the oven
-        self.lbl_new_temp = ttk.Label(self._root, text="Temperature:")
-        self.lbl_new_temp.grid(column=0, row=1)
-
-        self.entry_new_temp = ttk.Entry(self._root, width=30)
-        self.entry_new_temp.grid(column=1, row=1, sticky=tk.W, )
-
-        self.btn_set_new_temp = ttk.Button(self._root, text="Set")
-        self.btn_set_new_temp.grid(column=1, row=1, padx=20)
-
-        # bottom right buttons
-        self.btn_se_frame = ttk.Frame(self._root)
-        self.btn_se_frame.grid(column=grid_h, row=grid_w, sticky=tk.SE)
-
-        self.btn_start = ttk.Button(self.btn_se_frame, text="Start")
-        self.btn_start.pack(side=tk.LEFT)
-
-        self.btn_stop = ttk.Button(self.btn_se_frame, text="Stop")
-        self.btn_stop.pack(side=tk.LEFT)
-
-        self.btn_schedule = ttk.Button(self.btn_se_frame, text="Schedule")
-        self.btn_schedule.pack(side=tk.LEFT)
-    
+        self.gui()
+        
 
     # accessors
     @property
@@ -63,9 +28,62 @@ class App():
     def isOn(self, b):
         self._isOn = b
 
-    # methods
+    # gui methods
+    def schedule(self) -> None:
+        window_schedule = tk.Toplevel(self._root)
+        window_schedule.title("Scheduler")
+        window_schedule.geometry("200x600")
+
+        days_frame = tk.LabelFrame(window_schedule, text="Days", width=180, height=300)
+        days_frame.pack()
+
+        hours_frame = tk.LabelFrame(window_schedule, text="Hours", width=180, height=200, pady=10)
+        hours_frame.pack()
+
+
+    def gui(self) -> None:
+        self._root.title("Sr-oven")
+        self._root.geometry("600x200")
+        self._root.resizable(True, False)
+
+        self._root.columnconfigure(index=0, weight=1)
+        self._root.columnconfigure(index=1, weight=3)
+
+        grid_w, grid_h = self._root.grid_size()
+
+        # temperature monitoring
+        frame_monitor = ttk.LabelFrame(self._root, text="Monitor", width=580, height=100)
+        frame_monitor.grid(column=0, row=0, columnspan=2)
+
+        # field to input new temperature for the oven
+        lbl_new_temp = ttk.Label(self._root, text="Temperature:")
+        lbl_new_temp.grid(column=0, row=1)
+
+        frame_temp = ttk.Frame(self._root)
+        frame_temp.grid(column=1, row=1, sticky=tk.W, pady=5)
+
+        entry_new_temp = ttk.Entry(frame_temp, width=30)
+        entry_new_temp.pack(side=tk.LEFT, padx=5)
+
+        btn_set_new_temp = ttk.Button(frame_temp, text="Set T°")
+        btn_set_new_temp.pack(side=tk.LEFT)
+
+        # bottom right buttons
+        btn_se_frame = ttk.Frame(self._root)
+        btn_se_frame.grid(column=1, row=grid_w, sticky=tk.SE, pady=30)
+
+        btn_start = ttk.Button(btn_se_frame, text="Start")
+        btn_start.pack(side=tk.LEFT, padx=3)
+
+        btn_stop = ttk.Button(btn_se_frame, text="Stop")
+        btn_stop.pack(side=tk.LEFT, padx=5)
+
+        btn_schedule = ttk.Button(btn_se_frame, text="Schedule", command=self.schedule)
+        btn_schedule.pack(side=tk.LEFT, padx=5)
+    
+    # other methods
     def run(self) -> None:
-        self._root.mainloop() 
+        self._root.mainloop()
 
 
 
