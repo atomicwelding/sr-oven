@@ -57,7 +57,7 @@ def days(day = None, val = None):
         elif(val == "false"):
             oven.config_set_day(day, False)
         else:
-            return "ERRR IMPLEMENT"
+            return "ERR IMPLEMENT"
 
 @app.route('/hours/<string:hour>')
 @app.route('/hours/<string:hour>/<string:val>', methods=["POST"])

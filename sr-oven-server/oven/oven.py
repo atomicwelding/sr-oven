@@ -1,28 +1,79 @@
 import json
+from jsonschema import validate
 
 class Oven():
-    """ Main class to handle the oven. Works with a config.json file, with the given structure:
-        config_file = {
-            "status": [bool],
-            "temperature": [float],
-            "days": {
-                "monday": [bool],
-                ...
-                "sunday": [bool]
-            },
-            "hours": {
-                "start": [time str],
-                "stop": [time str]
+    """ Main class to handle the oven. Works with a config.json file. We check the config.json is 
+    properly formed using jsonschema. Raises an error when config.json is corrupted.
+
+    All connections between the power supply and sr-oven-server are handled in this class.
+    There's a router in server.py that calls methods of oven object.
+    """
+    def __init__(self) -> None:
+
+        self.schema = {
+            "type":"object",
+            "properties": {
+                "status": {
+                    "type":"boolean"
+                },
+
+                "temperature": {
+                    "type":"number"
+                },
+
+                "days" : {
+                    "type":"object",
+                    "properties":{
+                        "monday": {
+                            "type":"boolean"
+                        },
+
+                        "tuesday": {
+                            "type":"boolean"
+                        },
+
+                        "wednesday": {
+                            "type":"boolean"
+                        },
+
+                        "thursday": {
+                            "type":"boolean"
+                        },
+
+                        "friday": {
+                            "type":"boolean"
+                        },
+
+                        "saturday": {
+                            "type":"boolean"
+                        },
+
+                        "sunday": {
+                            "type":"boolean"
+                        }
+                    }
+                },
+
+                "hours": {
+                    "type":"object",
+                    "properties": {
+                        "start": {
+                            "type":"string",
+                        },
+
+                        "stop": {
+                            "type":"string"
+                        }
+                    }
+                }
             }
         }
 
-        All connections between the power supply and sr-oven-server are handled in this class.
-        There's a router in server.py that calls methods of oven object.
-    """
-    def __init__(self) -> None:
         with open('./oven/config.json') as config_file:
             self._config = json.load(config_file)
-    
+        
+        validate(instance=self._config, schema=self.schema)
+
 
     # accessors
     @property
@@ -61,6 +112,7 @@ class Oven():
     def config_save(self) -> None:
         # Call this method whenever you're modifying 
         # self._config to save the changes into config.json
+        validate(instance=self._config, schema=self.schema)
         with open('./oven/config.json', 'w+') as config_file:
             config_file.write(json.dumps(self._config))
 
