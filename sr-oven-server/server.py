@@ -8,20 +8,31 @@ from oven.oven import Oven
 app = Flask(__name__)
 oven = Oven()
 
+def successful_post() -> tuple: 
+    return "works", 200
+def unsuccesful_rqt() -> tuple:
+    return "bad request", 400
+
 ################ ROUTER ################
 @app.route('/', methods=["GET", "POST"])
-def index():
-    return oven.config
+def index() -> any:
+    if(request.method == "GET"):
+        return oven.config
+    elif(request.method == "POST" and request.json is not None):
+        print(request.json)
+        return successful_post()
+    else:
+        unsuccesful_rqt()
 
 @app.route('/status/')
 @app.route('/status/<string:val>', methods=["POST"])
 def status(val = None):
-    if(request.method == "POST" and (val is not "true" or val is not "false")):
+    if(request.method == "POST" and (val != "true" or val != "false")):
         oven.config_set_status(val == "true")
     elif(request.method == "GET"):
         return str(oven.config_get_status())
     else: 
-        return "error"
+        return unsuccesful_rqt()
 
 @app.route('/temperature/')
 @app.route('/temperature/<float:val>', methods=["POST"])
@@ -31,13 +42,13 @@ def temperature(val = None):
     elif(request.method == "GET"):
         return str(oven.config_get_temperature())
     else: 
-        return "error"
+        return unsuccesful_rqt()
 
 @app.route('/days/<string:day>')
 @app.route('/days/<string:day>/<string:val>', methods=["POST"])
 def days(day = None, val = None):
     if(day is None):
-        return "error"
+        return unsuccesful_rqt()
     if(request.method == "GET"):
         return str(oven.config_get_day(day))
     if(request.method == "POST" and val is not None):
@@ -46,13 +57,13 @@ def days(day = None, val = None):
         elif(val == "false"):
             oven.config_set_day(day, False)
         else:
-            return "error"
+            return "ERRR IMPLEMENT"
 
 @app.route('/hours/<string:hour>')
 @app.route('/hours/<string:hour>/<string:val>', methods=["POST"])
 def hours(hour = None, val = None):
     if(hour is None):
-        return "error"
+        return unsuccesful_rqt()
     
     if(request.method == "GET"):
         return str(oven.config_get_hour(hour))

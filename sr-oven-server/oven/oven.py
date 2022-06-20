@@ -22,7 +22,6 @@ class Oven():
     def __init__(self) -> None:
         with open('./oven/config.json') as config_file:
             self._config = json.load(config_file)
-            print(self._config)
     
 
     # accessors
@@ -30,7 +29,7 @@ class Oven():
     def config(self) -> dict:
         return self._config
 
-    # methods
+    # methods for configuration file
     def config_get_status(self) -> bool:
         return self._config["status"]
     def config_set_status(self, val: bool):
