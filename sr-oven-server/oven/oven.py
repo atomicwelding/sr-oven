@@ -66,7 +66,9 @@ class Oven():
                         }
                     }
                 }
-            }
+            }, 
+
+            "required":["status", "temperature", "hours", "days"]
         }
 
         with open('./oven/config.json') as config_file:
@@ -79,6 +81,11 @@ class Oven():
     @property
     def config(self) -> dict:
         return self._config
+    @config.setter
+    def config(self, c) -> None:
+        validate(instance=c, schema=self.schema)
+        self._config = c
+        self.config_save()
 
     # methods for configuration file
     def config_get_status(self) -> bool:

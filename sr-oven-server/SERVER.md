@@ -1,6 +1,6 @@
 # sr-oven-server
 
-This intends to be a minimalistic daemon manipulating the strontium oven. It listens on local network and can be controlled using HTTP protocol. See the API.
+This intends to be a minimalistic and daemonic http server manipulating the strontium oven. It listens on local network and can be controlled using HTTP protocol. See the API.
 
 ## API
 
@@ -13,7 +13,7 @@ API's code is somewhat well auto-documented and it might be interesting to check
       - `<day>`: "monday", "tuesday", ...
       - `<val>`: "true", "false" 
 - `/hours/<hour>/:<val>` :
-  - `GET` returns the hour corresping to start or stop, depending of which `<hour>` is asked
+  - `GET` returns the hour corresponding to start or stop, depending of which `<hour>` is asked
   - `POST` set starting or stoping hour
     - `<hour>`: "start", "stop"
     - `<val>`: hour to be set (*e.g.* `00:32:01`)
@@ -35,5 +35,6 @@ To create a client, it is strongly encouraged to keep tracks of datas by request
 ## Dependencies 
 
 - `daemonize`
+- `jsonschema`
 - `flask`
 - `pyvisa`

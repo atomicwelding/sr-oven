@@ -27,6 +27,7 @@ class App():
     def __init__(self) -> None:
         self._root = None
         self.t = None
+        self.haserror = False
 
         self.oven_config = {}
         self.days = {}
@@ -46,6 +47,10 @@ class App():
         sys.exit()
     
     def error(self, err) -> None:
+        if(self.haserror):
+            return
+        else:
+            self.haserror = True
         # create a window to print the error 
         window_error = tk.Toplevel(self._root)
         window_error.title("An error has occured")
@@ -219,21 +224,26 @@ class App():
         for d in self.days:
             self.oven_config["days"][d.lower()] = self.days[d].get()
 
+    def send_oven_config(self):
+        try:
+            re.post(URL, json=self.oven_config)
+        except Exception as err:
+            self.error(err)
+
     
     # main method
     def run(self) -> None:
+        
         # top level instance of Tk (main window)
         self._root = tk.Tk()
-        
-        # init connection by retrieving the config file of the oven
         try:
+            # init connection by retrieving the config file of the oven
             self.oven_config = json.loads(re.get(URL).text)
-        except re.exceptions.RequestException as err:
+            # send oven_config every 3 seconds 
+            self.t = set_interval_as_daemon(interval=3.0,
+                        callback=self.send_oven_config)
+        except Exception as err:
             self.error(err)
-
-        # send oven_config every 3 seconds 
-        self.t = set_interval_as_daemon(interval=3.0,
-                        callback= lambda: re.post(URL, json=self.oven_config))
         
         # on closing the main window
         self._root.protocol("WM_DELETE_WINDOW", self.on_closing)

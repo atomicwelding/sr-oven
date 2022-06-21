@@ -1,1 +1,1 @@
-{"status": false, "temperature": 1.9, "days": {"monday": true, "tuesday": true, "wednesday": false, "thursday": false, "friday": false, "saturday": false, "sunday": false}, "hours": {"start": "00:00:00", "stop": "00:00:11"}}
+{"days": {"friday": false, "monday": true, "saturday": false, "sunday": false, "thursday": false, "tuesday": true, "wednesday": false}, "hours": {"start": "00:00:00", "stop": "00:00:11"}, "status": false, "temperature": 1.8}
