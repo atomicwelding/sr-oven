@@ -17,7 +17,7 @@ class Oven():
                     "type":"boolean"
                 },
 
-                "temperature": {
+                "power": {
                     "type":"number"
                 },
 
@@ -68,7 +68,7 @@ class Oven():
                 }
             }, 
 
-            "required":["status", "temperature", "hours", "days"]
+            "required":["status", "power", "hours", "days"]
         }
 
         with open('./oven/config.json') as config_file:
@@ -95,11 +95,11 @@ class Oven():
         self._config["status"] = val
         self.config_save()
     
-    def config_get_temperature(self) -> float:
-        return self._config["temperature"]
-    def config_set_temperature(self, val: float) -> None:
-        # Use this method to set temperature, in celsius degree
-        self._config["temperature"] = val
+    def config_get_power(self) -> float:
+        return self._config["power"]
+    def config_set_power(self, val: float) -> None:
+        # Use this method to set power, in watt
+        self._config["power"] = val
         self.config_save()
 
     def config_get_day(self, day: str) -> bool:

@@ -30,13 +30,13 @@ def index() -> tuple:
     else:
         unsuccessful_rqt("only get or post methods are allowed")
 
-@app.route('/temperature', methods=["GET", "POST"])
-def temperature(val = None):
+@app.route('/power', methods=["GET", "POST"])
+def power(val = None):
     if(request.method == "GET"):
-        return str(oven.config_get_temperature())
+        return str(oven.config_get_power())
     elif(request.method == "POST" 
-        and isinstance(request.json["temperature"],float)):
-        oven.config_set_temperature(request.json["temperature"], float)
+        and isinstance(request.json["power"],float)):
+        oven.config_set_power(request.json["power"], float)
     else:
         return unsuccessful_rqt()
 
