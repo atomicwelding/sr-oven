@@ -1,1 +1,1 @@
-{"days": {"friday": false, "monday": true, "saturday": false, "sunday": false, "thursday": false, "tuesday": true, "wednesday": false}, "hours": {"start": "00:00:00", "stop": "00:00:11"}, "power": 1.3, "status": false}
+{"current": 1.2, "days": {"friday": true, "monday": true, "saturday": false, "sunday": false, "thursday": true, "tuesday": true, "wednesday": true}, "hours": {"start": "07:30:00", "stop": "21:00:00"}, "modified": true, "status": true}
