@@ -2,12 +2,8 @@
 Minimalistic client for the strontium oven.
 
 ## Install and usage
-Install needed dependencies through `pip`. Fill the right infos in `client_config.json`, then execute : 
-```
-python3 client.py
-```
+Execute `install.sh` in working directory and type "sr-oven-client". Enjoy!
 
 ## External Dependencies
 - `influxdb_client`
-- `tkinter`
 
