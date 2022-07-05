@@ -19,7 +19,7 @@ done
 # save config
 jq '.host |= "'$h'" | .port |= '$p' | .influx_host |= "'$ih'" | .influx_port |= "'$ip'" | .influx_token |= "'$it'"' client_config.json  >.config.tmp && cp .config.tmp client_config.json
 
-# setup in /etc/
+# setting up ... 
 
 sudo mkdir -p /usr/local/etc/sr-oven-client
 sudo cp ./client_config.json /usr/local/etc/sr-oven-client/client_config.json
