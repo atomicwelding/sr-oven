@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 import json, threading as thread, atexit, pyvisa
 from jsonschema import validate
-from sympy import true
 
 MAX_CURRENT = 1.4
 
@@ -92,7 +91,7 @@ class Oven():
             "required":["status", "modified", "current", "hours", "days"]
         }
 
-        with open('./oven/config.json') as config_file:
+        with open('/usr/local/bin/oven/config.json') as config_file:
             self._config = json.load(config_file)
         
         validate(instance=self._config, schema=self.schema)
