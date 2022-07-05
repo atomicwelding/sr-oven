@@ -2,10 +2,13 @@
     to oven's methods.
 """
 
+from datetime import datetime
 from flask import Flask, request
 from jsonschema import ValidationError, validate
 
 from oven.oven import Oven
+
+PORT = 8488
 
 app = Flask(__name__)
 oven = Oven()
@@ -23,20 +26,37 @@ def index() -> tuple:
     elif(request.method == "POST"):
         try:
             validate(instance=request.json, schema=oven.schema)
-            oven.config = request.json
+            if(request.json['modified']):
+                oven.config = request.json
             return successful_post()
         except ValidationError as err:
             return unsuccessful_rqt(str(err))
     else:
         unsuccessful_rqt("only get or post methods are allowed")
 
-@app.route('/power', methods=["GET", "POST"])
-def power(val = None):
+@app.route('/status/<string:s>', methods=["GET", "POST"])
+def status(s: str) -> tuple:
     if(request.method == "GET"):
-        return str(oven.config_get_power())
+        return str(oven.config_get_status()), 200
+    if(request.method == "POST"):
+        if(s == 'start'):
+            oven.start()
+            return "turned on", 200
+        elif(s == 'stop'):
+            oven.stop()
+            return "turned off", 200
+        else: return unsuccessful_rqt()
+    else:
+        return unsuccessful_rqt()
+
+@app.route('/current', methods=["GET", "POST"])
+def current(val = None):
+    if(request.method == "GET"):
+        return str(oven.config_get_current()), 200
     elif(request.method == "POST" 
-        and isinstance(request.json["power"],float)):
-        oven.config_set_power(request.json["power"], float)
+        and isinstance(request.json["current"], float)):
+        oven.config_set_current(request.json["current"])
+        return successful_post()
     else:
         return unsuccessful_rqt()
 
@@ -61,10 +81,14 @@ def hours(hour = None):
     
     if(request.method == "GET"):
         return str(oven.config_get_hour(hour)), 200
-    elif(request.method == "POST"
-        and isinstance(request.json[hour], str)):
-        oven.config_set_hour(hour, request.json[hour])
-        return successful_post()
+    elif(request.method == "POST"):
+        try:
+            # ensure given string is in the right format
+            datetime.datetime.strptime(request.json[hour], '%H:%M:%S')
+            oven.config_set_hour(hour, request.json[hour])
+            return successful_post()
+        except:
+            return unsuccessful_rqt()
     else:
         return unsuccessful_rqt()
 
@@ -73,4 +97,4 @@ def page_not_found(error):
    return "This page doesn't exist.", 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8488)
+    app.run(host="0.0.0.0", port=PORT)
