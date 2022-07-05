@@ -1,4 +1,8 @@
 {
     "host":"localhost",
-    "port":8488
+    "port":8488,
+    
+    "influx_host":"***",
+    "influx_port":"***",
+    "influx_token":"***"
 }
