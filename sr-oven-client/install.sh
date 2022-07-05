@@ -3,6 +3,7 @@ echo "===> Hi" $USER "! We will install sr-oven-client for you! ヽ(o＾▽＾o)
 
 # install dependencies 
 sudo apt install -y jq
+pip install influxdb_client
 
 # configure client_config.json
 echo "===> So, let's configure client_config.json: "
